@@ -3,7 +3,14 @@ package commands
 import tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 
 func (commander *Commander) Help(message *tgbotapi.Message) {
-	msg := tgbotapi.NewMessage(message.Chat.ID, "/help - help\n/list - list products")
+	commands := "/help - print list of commands\n" +
+		"/list - get a list of entities\n" +
+		"/get - get an entity" +
+		"/delete - delete an existing entity" +
+		"/new - create a new entity" +
+		"/edit - edit an existing entity"
+
+	msg := tgbotapi.NewMessage(message.Chat.ID, commands)
 
 	commander.bot.Send(msg)
 }
