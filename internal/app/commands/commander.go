@@ -70,7 +70,7 @@ func (commander *Commander) handleMessage(message *tgbotapi.Message) {
 	case "edit":
 		commander.Edit(message)
 	default:
-		commander.DefaultBehavior(message)
+		log.Printf("User %s wrotes undefined command: %s", message.From.UserName, message.Text)
 	}
 }
 
@@ -78,4 +78,14 @@ func (commander *Commander) showCommandFormat(inputMessage *tgbotapi.Message) {
 	outputMsg := tgbotapi.NewMessage(inputMessage.Chat.ID, "Command format: /{command}")
 
 	commander.bot.Send(outputMsg)
+}
+
+func (commander *Commander) HandleError(chatID int64, err error) {
+	log.Printf("An error has ocurred in Commander: %v", err)
+
+	outputMsg := tgbotapi.NewMessage(chatID, err.Error())
+
+	if _, err := commander.bot.Send(outputMsg); err != nil {
+		log.Printf("An error has ocurred in HandleError while sending error to user: %v", err)
+	}
 }

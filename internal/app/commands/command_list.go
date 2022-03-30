@@ -1,13 +1,20 @@
 package commands
 
-import tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+import (
+	"fmt"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+)
 
 func (commander *Commander) List(message *tgbotapi.Message) {
 	text := ""
-	products := commander.productService.List()
+	products, err := commander.productService.List(0, 10)
+	if err != nil {
+		commander.HandleError(message.Chat.ID, err)
+		return
+	}
 
-	for _, productItem := range products {
-		text += productItem.Title + "\n"
+	for id, productItem := range products {
+		text += fmt.Sprintf("[%d] %s - %d $\n", id, productItem.Name, productItem.Price)
 	}
 
 	msg := tgbotapi.NewMessage(message.Chat.ID, text)

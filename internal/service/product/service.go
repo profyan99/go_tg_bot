@@ -29,8 +29,8 @@ func (service *Service) Get(index uint) (*Product, error) {
 	return &allProducts[index], nil
 }
 
-func (service *Service) Add(product Product) uint {
-	allProducts = append(allProducts, product)
+func (service *Service) Add(product *Product) uint {
+	allProducts = append(allProducts, *product)
 
 	return uint(len(allProducts) - 1)
 }
@@ -45,12 +45,12 @@ func (service *Service) Remove(index uint) error {
 	return nil
 }
 
-func (service *Service) Update(index uint, product Product) error {
+func (service *Service) Update(index uint, product *Product) error {
 	if err := service.validateIndex(index); err != nil {
 		return err
 	}
 
-	allProducts[index] = product
+	allProducts[index] = *product
 
 	return nil
 }
