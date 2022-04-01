@@ -2,6 +2,7 @@ package product
 
 import (
 	"errors"
+	"log"
 	"math"
 )
 
@@ -12,6 +13,7 @@ func NewService() *Service {
 }
 
 func (service *Service) List(offset uint, limit uint) ([]Product, error) {
+	log.Printf("\nService list: %d %d", offset, limit)
 	if err := service.validateIndex(offset); err != nil {
 		return nil, err
 	}
@@ -19,6 +21,10 @@ func (service *Service) List(offset uint, limit uint) ([]Product, error) {
 	endIndex := int(math.Min(float64(len(allProducts)), float64(offset+limit)))
 
 	return allProducts[offset:endIndex], nil
+}
+
+func (service *Service) Count() int {
+	return len(allProducts)
 }
 
 func (service *Service) Get(index uint) (*Product, error) {

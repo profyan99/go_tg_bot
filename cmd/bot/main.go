@@ -4,6 +4,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/joho/godotenv"
 	"go-tg-bot/internal/app/commands"
+	"go-tg-bot/internal/app/pagination"
 	"go-tg-bot/internal/service/product"
 	"log"
 	"os"
@@ -32,7 +33,8 @@ func main() {
 	updates := bot.GetUpdatesChan(u)
 
 	productService := product.NewService()
-	commander := commands.NewCommander(bot, productService)
+	paginationService := pagination.NewPagination(productService)
+	commander := commands.NewCommander(bot, productService, paginationService)
 
 	for update := range updates {
 		commander.HandleUpdate(update)

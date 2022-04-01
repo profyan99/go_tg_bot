@@ -2,20 +2,23 @@ package commands
 
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"go-tg-bot/internal/app/pagination"
 	"go-tg-bot/internal/app/path"
 	"go-tg-bot/internal/service/product"
 	"log"
 )
 
 type Commander struct {
-	bot            *tgbotapi.BotAPI
-	productService *product.Service
+	bot               *tgbotapi.BotAPI
+	productService    *product.Service
+	paginationService *pagination.Pagination
 }
 
-func NewCommander(bot *tgbotapi.BotAPI, productService *product.Service) *Commander {
+func NewCommander(bot *tgbotapi.BotAPI, productService *product.Service, paginationService *pagination.Pagination) *Commander {
 	return &Commander{
-		bot:            bot,
-		productService: productService,
+		bot:               bot,
+		productService:    productService,
+		paginationService: paginationService,
 	}
 }
 
@@ -45,7 +48,11 @@ func (commander *Commander) handleCallback(callback *tgbotapi.CallbackQuery) {
 	case "list":
 		commander.CallbackList(callback, callbackPath)
 	default:
-		log.Printf("Commander.HandleCallback: unknown callback name: %s", callbackPath.CallbackName)
+		{
+			log.Printf("Commander.HandleCallback: unknown callback name: %s", callbackPath.CallbackName)
+			msg := tgbotapi.NewMessage(callback.Message.Chat.ID, "Invalid callback")
+			commander.bot.Send(msg)
+		}
 	}
 }
 
