@@ -84,6 +84,9 @@ cmake-build-*/
 # IntelliJ
 out/
 
+# Ignore db dump
+db/
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
