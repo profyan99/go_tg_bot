@@ -3,8 +3,8 @@ package config
 import "github.com/spf13/viper"
 
 const (
-	envDebug      = "TG_DEBUG"
-	envTgApiKey   = "TG_API_KEY"
+	envDebug      = "DEBUG"
+	envTgApiKey   = "API_KEY"
 	defaultDebug  = false
 	defaultApiKey = ""
 )
