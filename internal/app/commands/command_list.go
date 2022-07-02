@@ -6,6 +6,7 @@ import (
 )
 
 func (commander *Commander) List(message *tgbotapi.Message) {
+	message.Chat.
 	msg, err := commander.paginationService.BuildListMessage(message.Chat.ID, pagination.CallbackListData{})
 	if err != nil {
 		commander.HandleError(message.Chat.ID, err)
